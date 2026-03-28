@@ -33,3 +33,30 @@ class Board:
                     p = Piece("Red")
                     self.grid[row][col] = p
                     
+                    
+    def move_piece(self,start_pos, end_pos):
+        start_row , start_col = start_pos
+        end_row, end_col = end_pos
+        
+        #check bounds
+        if not (0 <= start_row < 8 or 0 <= end_row < 8 or 0 <= end_row < 8 or 0 <= end_col < 8): 
+            print("Outside board!"); return False
+            
+        #Check occupancy  
+        if(self.grid[start_row][start_col]==" "):
+            print("No piece there!"); return False
+        if(self.grid[end_row][end_col] != " "):
+            print("Target occupied!"); return False
+        
+        #check diagonal
+        row_diff = abs(start_row - end_row)
+        col_diff = abs(start_col - end_col)
+        if row_diff != 1 or col_diff != 1:
+            print("Not a diagonal move!"); return False
+            
+        piece = self.grid[start_row][start_col]
+        self.grid[start_row][start_col] = " "
+        self.grid[end_row][end_col] = piece
+        
+        return True
+        

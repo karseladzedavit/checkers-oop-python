@@ -10,3 +10,6 @@ class Piece:
         return char + "K"
     
        return char
+   
+    def make_king(self):
+        self.is_king = True

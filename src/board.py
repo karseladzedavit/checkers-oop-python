@@ -39,7 +39,7 @@ class Board:
         end_row, end_col = end_pos
         
         #check bounds
-        if not (0 <= start_row < 8 or 0 <= end_row < 8 or 0 <= end_row < 8 or 0 <= end_col < 8): 
+        if not (0 <= start_row < 8 and 0 <= end_row < 8 and 0 <= start_col < 8 and 0 <= end_col < 8): 
             print("Outside board!"); return False
             
         #Check occupancy  
@@ -47,16 +47,36 @@ class Board:
             print("No piece there!"); return False
         if(self.grid[end_row][end_col] != " "):
             print("Target occupied!"); return False
+            
+        piece = self.grid[start_row][start_col]
+        #check direction
+        if piece.color == "Black" and end_row < start_row and not piece.is_king: 
+            print("Can't move piece backword"); return False
+        if piece.color == "Red" and end_row > start_row and not piece.is_king: 
+            print("Can't move piece backword"); return False
         
         #check diagonal
         row_diff = abs(start_row - end_row)
         col_diff = abs(start_col - end_col)
-        if row_diff != 1 or col_diff != 1:
+        if row_diff not in [1,2] or row_diff!= col_diff:
             print("Not a diagonal move!"); return False
-            
-        piece = self.grid[start_row][start_col]
+        
+        if(row_diff==2 and col_diff==2):
+            mid_row = (start_row + end_row) // 2
+            mid_col = (start_col + end_col) // 2
+            if self.grid[mid_row][mid_col] == " ":
+                print("Not a valid  move!"); return False
+            if self.grid[mid_row][mid_col].color == piece.color:
+                print("Not a valid  move! Cant kill your piece"); return False
+            self.grid[mid_row][mid_col]= " "
+                        
+        
         self.grid[start_row][start_col] = " "
         self.grid[end_row][end_col] = piece
         
+        if piece.color =="Black" and end_row==7:
+            piece.make_king()
+        if piece.color =="Red" and end_row==0:
+            piece.make_king()
         return True
         

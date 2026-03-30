@@ -80,3 +80,21 @@ class Board:
             piece.make_king()
         return True
         
+        
+        
+    
+    def check_winner(self):
+        red_count = 0
+        black_count = 0
+        for i in self.grid:
+            for j in i:
+                if j !=" ":
+                    if j.color == "Red":
+                        red_count+=1
+                    elif j.color == "Black":
+                        black_count+=1
+        if red_count==0:
+            return "Black"
+        elif black_count==0:
+            return "Red"
+        else: return None
